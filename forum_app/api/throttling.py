@@ -13,5 +13,12 @@ class QuestionThrottle(UserRateThrottle):
             self.scope = new_scope
             self.rate = self.get_rate()
             self.num_requests, self.duration = self.parse_rate(self.rate)
-            
+
         return super().allow_request(request, view)
+    
+    
+class QuestionGetThrottle(UserRateThrottle):
+    scope = 'question-get'
+
+class QuestionPostThrottle(UserRateThrottle):
+    scope = 'question-post'
