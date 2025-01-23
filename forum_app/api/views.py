@@ -5,6 +5,8 @@ from .permissions import IsOwnerOrAdmin, CustomQuestionPermission
 from .throttling import QuestionThrottle
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.pagination import PageNumberPagination
+from .pagination import LargeRestulsSetPagination
 
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
@@ -19,6 +21,7 @@ class AnswerListCreateView(generics.ListCreateAPIView):
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    pagination_class = LargeRestulsSetPagination
 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = [ 'author__username']
