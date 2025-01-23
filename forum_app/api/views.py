@@ -19,9 +19,10 @@ class AnswerListCreateView(generics.ListCreateAPIView):
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    
-    filter_backends = [DjangoFilterBackend]
+
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = [ 'author__username']
+    search_fields = ['content', 'email']
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
