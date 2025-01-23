@@ -3,6 +3,8 @@ from forum_app.models import Like, Question, Answer
 from .serializers import QuestionSerializer, AnswerSerializer, LikeSerializer
 from .permissions import IsOwnerOrAdmin, CustomQuestionPermission
 from .throttling import QuestionThrottle
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
@@ -17,6 +19,9 @@ class AnswerListCreateView(generics.ListCreateAPIView):
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = [ 'author__username']
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
